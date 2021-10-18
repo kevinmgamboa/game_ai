@@ -5,3 +5,6 @@ This Lunar Lander used the open source Python library [Gym](https://github.com/o
 ### Setup
 
 For the setup and run of the files please create a Conda environment with Python 3.8 and install the requirements_lander.txt
+
+
+![Lander Image](Lander.png)
