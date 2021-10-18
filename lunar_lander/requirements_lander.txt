@@ -5,3 +5,5 @@ numpy==1.19.5
 pygame==2.0.0
 matplotlib==3.4.3
 pyglet==1.5.21
+pyqtgraph==0.12.3
+PyQt5==5.15.5

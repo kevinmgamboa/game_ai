@@ -1,9 +1,31 @@
+"""
+This file runs the lander game
+"""
 import gym
-from reinforce import REINFORCE
-import matplotlib.pyplot as plt
-import numpy as np 
-#from datetime import datetime
+import numpy as np
+#import matplotlib.pyplot as plt
+from pyqtgraph.Qt import QtGui, QtCore
+import pyqtgraph as pg
 
+# Import personal library
+from reinforce import REINFORCE
+#from datetime import datetime
+#%%
+# -----------------------------------------------------------------------------
+#                            GUI Development
+# -----------------------------------------------------------------------------
+app = QtGui.QApplication([])
+# Creating window
+win = pg.GraphicsWindow(title='Lunar Lander Data')
+win.resize(1000, 600)
+win.setWindowTitle('RL Data')
+# Enable antialiasing for prettier plots
+pg.setConfigOptions(antialias=True)
+# Adding window for plots
+p1 = win.addPlot(title = 'Reward vs Iteration')
+
+curve = p1.plot(pen='y')
+## ------------------------------
 env = gym.make('LunarLander-v2')
 env = env.unwrapped
 
@@ -24,16 +46,7 @@ learning_algorithm = REINFORCE(
     learning_rate=0.02, discount_factor=0.95)
 
 reward_history=[]
-plt.ion()
-fig=plt.figure("Reward vs Iteration")
-ax=fig.add_subplot(111)
-ax.axis([0,EPISODES+1,-400,400])
-plt.ylabel('Reward')
-plt.xlabel('Iteration')
-ax.plot(reward_history, 'b-')
-ax.set_title("Learning Rate:"+str(learning_algorithm.lr)+" Discount Factor:"+str(learning_algorithm.discount_factor))
-plt.draw()
-plt.pause(0.001)
+p1.setRange(xRange=[0, EPISODES+1], yRange=[-400, 400])
 
 for episode in range(EPISODES):
     observation = env.reset()
@@ -41,6 +54,7 @@ for episode in range(EPISODES):
     done = False
     steps=0
     while not(done):
+        curve.setData(reward_history, symbol='o')
         if episode%50==0: env.render()
 
         # 1. Choose an action based on observation
@@ -73,10 +87,10 @@ for episode in range(EPISODES):
             reward_history.append(episode_rewards_sum)
             # 5. Train neural network
             discounted_episode_rewards_norm = learning_algorithm.learn()
-            if episode%10==0:
-                ax.plot(reward_history, 'b-')
-                plt.draw()
-                plt.pause(0.001)
+
+
+            # if episode%10==0:
+            #     curve.setData(reward_history, symbol='o')
 
         # Save new observation
         observation = observation_
