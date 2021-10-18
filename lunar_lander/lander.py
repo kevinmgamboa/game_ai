@@ -2,12 +2,12 @@ import gym
 from reinforce import REINFORCE
 import matplotlib.pyplot as plt
 import numpy as np 
-from datetime import datetime
+#from datetime import datetime
 
 env = gym.make('LunarLander-v2')
 env = env.unwrapped
 
-# Policy gradient has high variance, seed for reproducability
+# Policy gradient has high variance, seed for reproducibility
 env.seed(1)
 
 print("env.action_space", env.action_space)
@@ -20,8 +20,8 @@ EPISODES = 1000
 rewards = []
 
 learning_algorithm = REINFORCE(
-    num_inputs = env.observation_space.shape[0], num_actions = env.action_space.n, 
-    learning_rate=0.02,discount_factor=0.95)
+    num_inputs=env.observation_space.shape[0], num_actions=env.action_space.n,
+    learning_rate=0.02, discount_factor=0.95)
 
 reward_history=[]
 plt.ion()
@@ -29,7 +29,7 @@ fig=plt.figure("Reward vs Iteration")
 ax=fig.add_subplot(111)
 ax.axis([0,EPISODES+1,-400,400])
 plt.ylabel('Reward')
-plt.xlabel('Iteration')        
+plt.xlabel('Iteration')
 ax.plot(reward_history, 'b-')
 ax.set_title("Learning Rate:"+str(learning_algorithm.lr)+" Discount Factor:"+str(learning_algorithm.discount_factor))
 plt.draw()
@@ -65,11 +65,11 @@ for episode in range(EPISODES):
             rewards.append(episode_rewards_sum)
             max_reward_so_far = np.amax(rewards)
 
-            print("==========================================")
-            print("Episode: ", episode)
-            print("Steps:",steps)
-            print("Reward: ", episode_rewards_sum)
-            print("Max reward so far: ", max_reward_so_far)
+            print(40*"=")
+            print(f'Episode: {episode}')
+            print(f'Steps: {steps}')
+            print(f'Reward: {episode_rewards_sum}')
+            print(f'Max reward so far: {max_reward_so_far}')
             reward_history.append(episode_rewards_sum)
             # 5. Train neural network
             discounted_episode_rewards_norm = learning_algorithm.learn()
@@ -81,4 +81,4 @@ for episode in range(EPISODES):
         # Save new observation
         observation = observation_
         
-plt.savefig("Result_"+datetime.now().strftime("%m%d%Y_%H%M%S")+".png")
+#plt.savefig("Result_"+datetime.now().strftime("%m%d%Y_%H%M%S")+".png")
